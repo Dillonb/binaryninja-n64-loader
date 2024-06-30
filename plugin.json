@@ -1,0 +1,21 @@
+{
+	"pluginmetadataversion": 2,
+	"name": "Nintendo 64",
+	"type": ["binaryview"],
+	"api": ["python3"],
+	"description": "N64 file BinaryView",
+	"longdescription": "Binary View for N64 ROM files",
+	"license": {
+		"name": "MIT",
+		"text": "Copyright (c) 2024 Dillon Beliveau"
+	},
+	"platforms": ["Windows", "Linux", "Darwin"],
+	"installinstructions" : {
+		"Windows" : "None"
+		"Linux" : "None",
+		"Darwin" : "None",
+	},
+	"version": "1.0.0",
+	"author": "Dillon Beliveau",
+	"minimumbinaryninjaversion": 2846
+}
