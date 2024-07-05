@@ -23,20 +23,19 @@ class N64View(BinaryView):
 
     def __init__(self, data: BinaryView):
         BinaryView.__init__(self, parent_view=data, file_metadata=data.file)
+        self.platform = Architecture["mips64"].standalone_platform
         self.raw = data
         self.header = N64Header(data)
         self.load_address = self.header.load_address
         self._endianness = Endianness.BigEndian
 
     def init(self) -> bool:
-        self.platform = Architecture["mips64"].standalone_platform
-        # TODO define sections
-        n64_memory.define_segments(self, self.raw, self.header.load_address)
+        n64_memory.define_segments(self, self.raw, self.load_address)
         n64_memory.define_misc_sections(self)
 
-        self.add_entry_point(self.header.load_address)
         self.header.create_header_type(self)
-        n64_symbols.define_n64_symbols(self, self.header.load_address)
+        n64_symbols.define_n64_symbols(self, self.load_address)
+        # self.add_entry_point(self.load_address)
 
         return True
 
@@ -44,7 +43,7 @@ class N64View(BinaryView):
         return True
 
     def perform_get_entry_point(self):
-        return self.header.load_address
+        return self.load_address
 
     def perform_get_default_endianness(self):
         return Endianness.BigEndian

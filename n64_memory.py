@@ -3,6 +3,12 @@ from binaryninja.enums import SegmentFlag, SectionSemantics
 
 from .n64_header import N64Header
 
+def addr_to_64(v):
+    if v >> 31:
+        return v | (0xFFFFFFFF << 32)
+    else:
+        return v
+
 def define_misc_sections(bv: BinaryView):
     sections = [
         (0xA3F00000, 0xA3F00027, "RDRAM Registers",".rdreg"),
@@ -22,7 +28,11 @@ def define_misc_sections(bv: BinaryView):
         (0x80000000, 0x800003FF, "Interrupt Vector Table",".ivt"),
     ]
     for s in sections:
-        bv.add_auto_section(s[3], s[0], s[1] - s[0], info_section=s[2])
+        bv.add_auto_section(s[3],
+                            addr_to_64(s[0]),
+                            s[1] - s[0],
+                            SectionSemantics.ExternalSectionSemantics,
+                            info_section=s[2])
 
 def define_segments(bv: BinaryView, raw_bv: BinaryView, load_address: int):
     # rx !w
@@ -31,14 +41,17 @@ def define_segments(bv: BinaryView, raw_bv: BinaryView, load_address: int):
             SegmentFlag.SegmentContainsCode |
             SegmentFlag.SegmentDenyWrite)
 
-    rom_addr = 0xFFFFFFFFB0000000
+    rom_addr = addr_to_64(0xB0000000)
     # Cartridge
     bv.add_auto_segment(rom_addr,
                         raw_bv.length,
                         0,
                         raw_bv.length,
                         flags)
-    bv.add_auto_section('.rom', rom_addr, raw_bv.length)
+    bv.add_auto_section('.rom',
+                        rom_addr,
+                        raw_bv.length,
+                        SectionSemantics.ReadOnlyCodeSectionSemantics)
 
     # rwx
     flags = (SegmentFlag.SegmentReadable |
@@ -53,14 +66,25 @@ def define_segments(bv: BinaryView, raw_bv: BinaryView, load_address: int):
                         N64Header.BOOTLOADER_END,
                         ram_code_len,
                         flags)
-    bv.add_auto_section('.ram', load_address, ram_code_len)
+    bv.add_auto_section('.ram',
+                        load_address,
+                        ram_code_len,
+                        SectionSemantics.ReadOnlyCodeSectionSemantics)
 
-    boot_addr = 0xA4000040
+    # r-x
+    flags = (SegmentFlag.SegmentReadable |
+             SegmentFlag.SegmentExecutable |
+             SegmentFlag.SegmentContainsCode)
+
+    boot_addr = addr_to_64(0xA4000040)
     boot_len = N64Header.BOOTLOADER_END - N64Header.HEADER_SIZE
     bv.add_auto_segment(boot_addr,
                         boot_len,
                         N64Header.HEADER_SIZE,
                         boot_len, 
-                        SegmentFlag.SegmentContainsCode)
-    bv.add_auto_section('.boot', boot_addr, boot_len)
+                        flags)
+    bv.add_auto_section('.boot',
+                        boot_addr,
+                        boot_len,
+                        SectionSemantics.ReadOnlyCodeSectionSemantics)
 
