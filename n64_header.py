@@ -20,7 +20,7 @@ class N64Header:
     HEADER_SIZE = 0x40
     BOOTLOADER_END = 0x1000
 
-    def create_header_type(self, bv):
+    def create_header_type(self, bv: BinaryView):
         """
         https://github.com/Dillonb/n64/blob/2b198e399222dbbe7accb49f63febd488ed87b5a/src/mem/n64rom.h#L7-L24
         typedef struct n64_header {

@@ -30,7 +30,8 @@ class N64View(BinaryView):
         self._endianness = Endianness.BigEndian
 
     def init(self) -> bool:
-        n64_memory.define_segments(self, self.raw, self.load_address)
+        n64_memory.define_system_memory_map(self)
+        n64_memory.map_file_into_memory(self, self.raw, self.load_address)
         n64_memory.define_misc_sections(self)
 
         self.header.create_header_type(self)

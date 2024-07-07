@@ -1,6 +1,5 @@
 from binaryninja import BinaryView, Symbol, SymbolType
-
-from .util import *
+from .n64_memory import *
 
 # Code normally executed out of cached memory
 STATIC_CODE_SYMBOLS = [
