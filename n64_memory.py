@@ -98,10 +98,10 @@ def map_file_into_memory(bv: BinaryView,
 
     # rwx
     flags = (SegmentFlag.SegmentReadable |
-             SegmentFlag.SegmentWritable | 
+             SegmentFlag.SegmentWritable |
              SegmentFlag.SegmentExecutable |
              SegmentFlag.SegmentContainsCode)
-            
+
     # Code copied to RAM by IPL3
     ram_code_len = raw_bv.length - N64Header.BOOTLOADER_END
     bv.add_auto_segment(load_address,
@@ -124,7 +124,7 @@ def map_file_into_memory(bv: BinaryView,
     bv.add_auto_segment(boot_addr,
                         boot_len,
                         N64Header.HEADER_SIZE,
-                        boot_len, 
+                        boot_len,
                         flags)
     bv.add_auto_section('.boot',
                         boot_addr,

@@ -127,7 +127,7 @@ def define_n64_symbols(bv: BinaryView, load_address: int):
     # Define our static code and data symbols
     for sym in MMIO:
         bv.define_auto_symbol(Symbol(sym.type, addr_to_64(sym.address | KSEG1_BASE), sym.name))
-        
+
     for sym in STATIC_CODE_SYMBOLS:
         bv.define_auto_symbol(Symbol(sym.type, addr_to_64(sym.address | KSEG0_BASE), sym.name))
 
