@@ -62,7 +62,7 @@ def define_misc_sections(bv: BinaryView):
         (0x1FC007C0, 0x1FC007FF, "PIF RAM",".pifram"),
     ]
     for start, end, section_desc, section_name in sections:
-        for kseg, kseg_name in KSEG_MIRRORS:
+        for kseg, _, kseg_name in KSEG_MIRRORS:
             bv.add_auto_section(f"{section_name}_{kseg_name.lower()}",
                                 addr_to_64(start | kseg),
                                 end - start,
