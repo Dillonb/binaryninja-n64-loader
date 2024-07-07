@@ -1,5 +1,6 @@
 from binaryninja import BinaryView
 from binaryninja.types import StructureBuilder, Type
+from binaryninja.enums import Endianness
 import zlib
 
 from .util import *
@@ -78,8 +79,7 @@ class N64Header:
             case _:
                 self.rom_type = "unknown"
 
-        self.load_address = bv.read_int(8, 4) | KSEG0_BASE | 0xFFFFFFFF00000000
-        print(f"Load address: {self.load_address:x}")
+        self.load_address = bv.read_int(8, 4, endian=Endianness.BigEndian) | 0xFFFFFFFF00000000
 
         self.bootloader = bv.read(N64Header.HEADER_SIZE, 0x9C0)
         self.bootloader_crc32 = zlib.crc32(self.bootloader)
