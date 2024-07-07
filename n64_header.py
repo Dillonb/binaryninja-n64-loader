@@ -3,8 +3,6 @@ from binaryninja.types import StructureBuilder, Type
 from binaryninja.enums import Endianness
 import zlib
 
-from .util import *
-
 class N64Header:
     Z64_MAGIC = b"\x80\x37\x12\x40"
     N64_MAGIC = b"\x40\x12\x37\x80"
