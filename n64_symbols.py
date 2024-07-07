@@ -137,3 +137,7 @@ def define_n64_symbols(bv: BinaryView, load_address: int):
     # Explicitly add function symbol at load address (start of code in ram)
     bv.define_auto_symbol(Symbol(SymbolType.FunctionSymbol, load_address, "ramMain"))
 
+    # Create functions at function symbols
+    for sym in bv.get_symbols_of_type(SymbolType.FunctionSymbol):
+        bv.add_function(sym.address)
+
