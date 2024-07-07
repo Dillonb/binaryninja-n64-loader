@@ -1,3 +1,11 @@
 # Nintendo 64 ROM Loader for Binary Ninja
 
-WIP. Incomplete and currently supports only commercial IPL3s.
+WIP. Currently supports only commercial IPL3s.
+
+## Requirements
+
+- Binary Ninja dev branch
+
+## Installing
+
+Clone to your Binary Ninja plugins directory. On Linux, this is ~/.binaryninja/plugins/
