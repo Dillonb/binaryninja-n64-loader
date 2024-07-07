@@ -133,7 +133,7 @@ def define_system_memory_map(bv: BinaryView):
     for base, end, name in KSEGS:
         size = end - base + 1
         log_info(
-            f'Creating {name} [{base:#08x}-{end:#08x}] ({size} bytes)',
+            f'Creating {name} [{base:#010x}-{end:#010x}] ({size} bytes)',
             bv.name
         )
         bv.add_auto_segment(addr_to_64(base), size, 0, 0, rwx_seg_flags)
