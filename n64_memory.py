@@ -70,7 +70,12 @@ def define_misc_sections(bv: BinaryView):
                                 info_section=f"{section_desc} ({kseg_name})")
 
     # Map the PIF rom into our database
-    bv.memory_map.add_memory_region(".pifrom", addr_to_64(0x1FC00000), PIF)
+    bv.memory_map.add_memory_region(f".pifrom_{KSEG0[2].lower()}",
+                                    addr_to_64(0x1FC00000 | KSEG0_BASE),
+                                    PIF)
+    bv.memory_map.add_memory_region(f".pifrom_{KSEG1[2].lower()}",
+                                    addr_to_64(0x1FC00000 | KSEG1_BASE),
+                                    PIF)
 
 def map_file_into_memory(bv: BinaryView,
                                  raw_bv: BinaryView,
