@@ -13,7 +13,7 @@
           buildInputs = with pkgs.${system}; [
             python312
           ];
-          PYTHONPATH = "~/binja/binaryninja/python";
+          PYTHONPATH = "/Applications/Binary Ninja.app/Contents/Resources/python";
         };
       });
     };
